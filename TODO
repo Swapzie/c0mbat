@@ -1,0 +1,6 @@
+kollissionshantering:
+ - studsar skall flyttas ut från ytan med samma mått som de var innanför
+ - kontrollera om föremålet passerat genom en yta?
+
+uppdatering:
+ - hastigheten skall sänkas i proportion mot uppdaterad gameTime

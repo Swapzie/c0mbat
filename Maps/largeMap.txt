@@ -1,0 +1,48 @@
+30  20 [Terrain goes here]
+555555555555555555555555555555*
+5                            5*
+5                            5*
+5            15555           5*
+5           155555           5*
+5         55555              5*
+5         55554              5*
+5  5                         5*
+5  5                         5*
+5  5                         5*
+5  555555555555555555        5*	
+5                            5*
+5                         5555*
+5                       55555 *
+5                     55555   *
+5                   55555     *
+5                 55555       *
+5              555555         *
+5            555555           *
+555555555555555555555555555555*
+
+
+
+
+
+
+
+
+
+------------------
+--Comments below--
+
+x-size,y-size,sprite-set
+
+these are the terrain tiles:
+
+0: empty tile, sprite not in use
+1: sloping floor /
+2: sloping floor \
+3: slanting cieling \
+4: slanting cieling /
+5: square block
+
+
+
+
+
