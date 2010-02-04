@@ -30,6 +30,7 @@ class gameEngine
     void test();
 
  private:
+    int mouse_x, mouse_y;
     void add_game_object(GameObject obj);
     
     void blit_game_objects(SDL_Surface *screen);

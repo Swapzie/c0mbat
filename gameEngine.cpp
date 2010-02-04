@@ -80,6 +80,9 @@ void gameEngine::Load_Content(SDL_Surface *screen)
     if(debug_feedback)
         map->print(cout);
 
+    SDL_ShowCursor(SDL_DISABLE);
+    mouse_x = mouse_y = 0;
+
 
     test_player = new Player(player_sprites, "Pelleh");
 
@@ -93,6 +96,8 @@ void gameEngine::Load_Content(SDL_Surface *screen)
     KS.Up = false;
     KS.Left = false;
     KS.Right = false;
+    KS.Jump = false;
+    KS.Down = false;
 
 
 }
@@ -210,6 +215,18 @@ void gameEngine::Draw_HUD()
         SDL_BlitSurface(HUD_sprites,sourceRect,gameScreen,targetRect);
     }
     
+    sourceRect -> h = 16;
+    sourceRect -> w = 16;
+    sourceRect -> x = 32;
+    sourceRect -> y = 0;
+
+    targetRect -> h = 16;
+    targetRect -> w = 16;
+    targetRect -> x = mouse_x - 8;
+    targetRect -> y = mouse_y - 8;
+
+    SDL_BlitSurface(HUD_sprites, sourceRect, gameScreen, targetRect);
+    
     delete sourceRect;
     delete targetRect; 
 
@@ -218,8 +235,6 @@ void gameEngine::Draw_HUD()
 void gameEngine::grab_keyboard_events()
 {
     SDL_Event event;
-
-
 
     while(SDL_PollEvent(&event)){
         switch(event.type){
@@ -271,11 +286,15 @@ void gameEngine::grab_keyboard_events()
                         break; 
                     default: break;
                 }
-                break;
-        case SDL_QUIT:
-            done = true;
             break;
-        default:
+            case SDL_MOUSEMOTION:
+                mouse_x = event.motion.x;
+                mouse_y = event.motion.y;
+            break;
+            case SDL_QUIT: 
+                done = true;
+            break;
+                default:
             break;
         }
     }
