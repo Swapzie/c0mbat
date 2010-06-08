@@ -84,13 +84,15 @@ void gameEngine::Load_Content(SDL_Surface *screen)
     mouse_x = mouse_y = 0;
 
 
-    test_player = new Player(player_sprites, "Pelleh");
+    local_player = new Player(player_sprites, "Pelleh");
 
     object_handler = new GameObjectHandler(object_sprites, 
-                                           projectile_sprites);
+                                           projectile_sprites,
+                                           player_sprites);
 
-    //object_handler -> spawn_grenade(100,100,0.5,-0.5);
+    object_handler -> grab_player_control(local_player);
 
+    
 
     
     KS.Up = false;
@@ -137,12 +139,14 @@ void gameEngine::Start_Game()
                         
     int x_cam = 0, y_cam = 0;
 
+
+    
     while(done == false){
 
 
         gameTime = SDL_GetTicks();
 
-        grab_keyboard_events();
+        grab_keyboard_events(gameTime);
 
         /*
         if(gameTime - lastThrow > 1000){ 
@@ -154,9 +158,10 @@ void gameEngine::Start_Game()
         object_handler -> update (gameTime - lastUpdate); 
         object_handler -> check_collission(map);
 
-        test_player -> handle_input(KS);
-        test_player -> check_collission(map);
-        test_player -> update(gameTime - lastUpdate);
+
+        local_player -> handle_input(KS);
+        local_player -> check_collission(map);
+        local_player -> update(gameTime - lastUpdate);
         
         Draw(); 
 
@@ -168,15 +173,16 @@ void gameEngine::Start_Game()
 
     SDL_FreeSurface(player_sprites);
     SDL_FreeSurface(object_sprites);
+
 }
 
 void gameEngine::Draw()
 {
     SDL_FillRect(gameScreen,NULL,SDL_MapRGB(gameScreen->format,200,200,250));
-    map->draw(gameScreen,test_player->X() - 304, test_player->Y() - 200);
+    map->draw(gameScreen,local_player->X() - 304, local_player->Y() - 200);
 
-    test_player -> draw(gameScreen, test_player->X()- 304, 
-                                    test_player->Y()- 200);
+    local_player -> draw(gameScreen, local_player->X()- 304, 
+                                     local_player->Y()- 200);
 
     object_handler->draw(gameScreen);
      
@@ -232,7 +238,7 @@ void gameEngine::Draw_HUD()
 
 }
 
-void gameEngine::grab_keyboard_events()
+void gameEngine::grab_keyboard_events(unsigned int gameTime)
 {
     SDL_Event event;
 
@@ -281,8 +287,13 @@ void gameEngine::grab_keyboard_events()
                         KS.Right = false;
                         break;
 
+
+                    case SDLK_o:
+                        local_player->spawn(2,2);
+                        break;
+
                     case SDLK_p:
-                        object_handler -> spawn_grenade(100,100,0.5,-0.5);
+                        object_handler -> spawn_grenade();
                         break; 
                     default: break;
                 }
@@ -290,6 +301,7 @@ void gameEngine::grab_keyboard_events()
             case SDL_MOUSEMOTION:
                 mouse_x = event.motion.x;
                 mouse_y = event.motion.y;
+                object_handler -> set_mouse_position(mouse_x, mouse_y);
             break;
             case SDL_QUIT: 
                 done = true;

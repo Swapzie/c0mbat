@@ -12,7 +12,7 @@ class GameObject
  public:
     GameObject(SDL_Surface *sprite, int x, int y, int h, int w);
 
-    void draw(SDL_Surface *gameSurface);
+    void draw(SDL_Surface *gameSurface,int x_cam, int y_cam);
     void update(unsigned int gameTime);
 
  private:
@@ -30,16 +30,21 @@ class GameProjectile
     GameProjectile(SDL_Surface *sprite,
                    int x, int y, int h, int w, float a, float b);    
     
-    void draw(SDL_Surface *gameSurface);
+    void draw(SDL_Surface *gameSurface, int x_cam, int y_cam);
     void update(unsigned int gameTime);
 
     void check_collission(GameMap *map);
+
+    void print_debug(){cerr << "<" << x_grid << "|" << y_grid << ">" << 
+                               "[" << x_pos << "," << y_pos << 
+                               "|" << x_vel << "," << y_vel << "]" << endl;}
 
     bool check_for_removal(){return expired;}
 
  private:
 
     void blow_up(unsigned int atGameTime);
+    void initiate ();
   
     SDL_Surface *m_sprite;
     SDL_Rect *m_rect;

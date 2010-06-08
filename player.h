@@ -1,3 +1,6 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include "gameMap.h"
 
 
@@ -19,7 +22,7 @@ struct KeySet
     unsigned Reload: 1; // --||--  reloading  
     unsigned Use: 1;    // --||--  using certain map items
 
-    signed Rel_X: 8;    // --||--  Relative position of aim, + = left
+    signed Rel_X: 8;    // --||--  Relative position of aim, plus is left
     signed Rel_Y: 8;    // --||--  Rel pos of aim, plus is down. 
 };
 
@@ -37,9 +40,7 @@ class Player
     void handle_input(KeySet KS);
 
     int X() {return (int) x_grid*32 + x_pos;}
-    int Y() {return (int) y_pos +y_grid*32;}
-
-
+    int Y() {return (int) y_grid*32 + y_pos;}
 
 
  private:
@@ -57,3 +58,6 @@ class Player
     string name; 
     movement_state state;
 };
+
+
+#endif

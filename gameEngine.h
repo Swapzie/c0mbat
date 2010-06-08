@@ -36,7 +36,7 @@ class gameEngine
     void blit_game_objects(SDL_Surface *screen);
     void Draw_HUD();
 
-    void grab_keyboard_events(); 
+    void grab_keyboard_events(unsigned int gameTime); 
     bool done;
 
     SDL_Surface *gameScreen;
@@ -58,7 +58,7 @@ class gameEngine
 
     GameObjectHandler *object_handler;
 
-    Player *test_player;
+    Player *local_player;
     KeySet KS;
 };
 
