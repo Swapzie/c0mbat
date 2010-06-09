@@ -21,8 +21,6 @@ void GameObjectHandler::spawn_grenade()
     double speedX = (double)(mouseX - 304) / 600;
     double speedY = (double)(mouseY - 200) / 200;
 
-    cerr << "vX: " << speedX << " vY: " << speedY << endl;
-  
     GameProjectile temp(projectile_sprites,
                         m_local_player->X(),
                         m_local_player->Y(),

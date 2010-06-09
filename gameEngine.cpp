@@ -81,6 +81,8 @@ void gameEngine::Load_Content(SDL_Surface *screen)
         map->print(cout);
 
     SDL_ShowCursor(SDL_DISABLE);
+    SDL_WM_GrabInput(SDL_GRAB_OFF);
+
     mouse_x = mouse_y = 0;
 
 
@@ -101,7 +103,7 @@ void gameEngine::Load_Content(SDL_Surface *screen)
     KS.Jump = false;
     KS.Down = false;
 
-
+    SDL_WarpMouse(304,200);
 }
 
 void gameEngine::Load_Map()
@@ -291,12 +293,21 @@ void gameEngine::grab_keyboard_events(unsigned int gameTime)
                     case SDLK_o:
                         local_player->spawn(2,2);
                         break;
+
+                    case SDLK_p:
+                        object_handler -> spawn_grenade();
+                        break; 
                     default: break;
                 }
             break;
-            case SDL_BUTTON_LEFT:
-                object_handler -> spawn_grenade();
-                break;
+            case SDL_MOUSEBUTTONDOWN:
+                switch(SDL_GetMouseState(&mouse_x, &mouse_y)){
+                    case SDL_BUTTON(SDL_BUTTON_LEFT):
+                        object_handler -> spawn_grenade();
+                        break;
+
+                    default: break;
+                }
             case SDL_MOUSEMOTION:
                 mouse_x = event.motion.x;
                 mouse_y = event.motion.y;
