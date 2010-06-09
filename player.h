@@ -55,6 +55,11 @@ class Player
 
     bool isAlive;
 
+    void update_animation(unsigned int gameTime);
+
+    unsigned int lastUpdate;
+    unsigned int lastAnimationUpdate;
+
     string name; 
     movement_state state;
 };

@@ -21,6 +21,13 @@ Player::Player(SDL_Surface *sprite, string name)
 
     state = Airborne;
 
+    m_sprite_rect = new SDL_Rect;
+    m_sprite_rect->x = 0;
+    m_sprite_rect->y = 0;
+    m_sprite_rect->h = 64;
+    m_sprite_rect->w = 32;
+
+
 }
 
 void Player::draw(SDL_Surface *gameSurface, int x_cam, int y_cam)
@@ -28,7 +35,7 @@ void Player::draw(SDL_Surface *gameSurface, int x_cam, int y_cam)
     if(isAlive){
         m_rect -> x = x_grid*32 + x_pos - x_cam;
         m_rect -> y = y_grid*32 + y_pos - y_cam;
-        SDL_BlitSurface(m_sprite, NULL, gameSurface, m_rect);
+        SDL_BlitSurface(m_sprite, m_sprite_rect, gameSurface, m_rect);
     }
 
 }
@@ -62,8 +69,33 @@ void Player::update(unsigned int gameTime)
             y_vel += 0.0015 * gameTime;
 
 
-    }
+        update_animation(gameTime); 
 
+        lastUpdate = gameTime;
+
+    }
+}
+
+void Player::update_animation(unsigned int gameTime)
+{
+    switch(state)
+    {
+        case OnGround:
+        m_sprite_rect ->y = 0;
+        break;
+
+        case ClimbingRightWall:
+        m_sprite_rect ->y = 64;
+        break;
+
+        case ClimbingLeftWall:
+        m_sprite_rect ->y = 128;
+        break;
+
+        case Airborne:
+        m_sprite_rect ->y = 192;
+        break;
+    }
 }
 
 void Player::check_collission(GameMap *map)
