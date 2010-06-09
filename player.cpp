@@ -124,7 +124,8 @@ void Player::check_collission(GameMap *map)
                             x_pos = 0;
                         }
                     }
-                    if (map -> tile_at(x_grid, y_grid+2)==0)
+                    if (map -> tile_at(x_grid, y_grid+2)==0 && x_pos > 0 &&
+                        map -> tile_at(x_grid+1, y_grid+2)==0) 
                         state = Airborne;
 
                 break;
