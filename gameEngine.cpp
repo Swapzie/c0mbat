@@ -291,13 +291,12 @@ void gameEngine::grab_keyboard_events(unsigned int gameTime)
                     case SDLK_o:
                         local_player->spawn(2,2);
                         break;
-
-                    case SDLK_p:
-                        object_handler -> spawn_grenade();
-                        break; 
                     default: break;
                 }
             break;
+            case SDL_BUTTON_LEFT:
+                object_handler -> spawn_grenade();
+                break;
             case SDL_MOUSEMOTION:
                 mouse_x = event.motion.x;
                 mouse_y = event.motion.y;
