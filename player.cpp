@@ -96,11 +96,12 @@ void Player::update_animation(unsigned int gameTime)
         m_sprite_rect ->y = 192;
         break;
     }
+    lastAnimationUpdate = gameTime;
+
 }
 
 void Player::check_collission(GameMap *map)
 {
-
     if (x_grid > 0 && x_grid < map->width()-1){
         if(y_grid >= 0 && y_grid < map -> height()-2){
 
@@ -108,18 +109,18 @@ void Player::check_collission(GameMap *map)
             {
                 case OnGround:
                     if (x_vel > 0){
-                        if(map->tile_at(x_grid +1, y_grid) > 0 ||
-                           map->tile_at(x_grid +1, y_grid+1) > 0){
+                        if(map->tile_at(x_grid +1, y_grid) > 2 ||
+                           map->tile_at(x_grid +1, y_grid+1) > 2){
                             x_vel = 0;
                             x_pos = 0;
                         }
                     }
                     else if(x_vel < 0){
 
-                        if((map -> tile_at(x_grid -1, y_grid) > 0  ||
-                            map -> tile_at(x_grid -1, y_grid+1) > 0)
+                        if((map -> tile_at(x_grid -1, y_grid) > 2  ||
+                            map -> tile_at(x_grid -1, y_grid+1) > 2)
 
-                            && x_pos < 10){
+                            && x_pos < 5){
                             x_vel = 0;
                             x_pos = 0;
                         }
@@ -127,6 +128,35 @@ void Player::check_collission(GameMap *map)
                     if (map -> tile_at(x_grid, y_grid+2)==0 && x_pos > 0 &&
                         map -> tile_at(x_grid+1, y_grid+2)==0) 
                         state = Airborne;
+
+                    else if(map->tile_at(x_grid+1, y_grid+2) == 2 &&
+                            x_pos > 16){
+                            y_pos = x_pos+16;
+                            y_grid--;
+                    }
+                    else if(map->tile_at(x_grid, y_grid+2)==2 ){
+                        y_pos = x_pos+16;
+                    }
+
+                    else if(map -> tile_at(x_grid, y_grid+1)==2 
+                        && x_pos < 16){
+                        y_pos = x_pos +16;
+                        y_grid--;
+                    }
+
+                    else if(map -> tile_at(x_grid+1, y_grid+1 ) == 1
+                        && x_pos > 16){
+                        y_pos =  16 - x_pos;
+                    }
+                    else if(map -> tile_at(x_grid+1, y_grid+2)== 1){
+                        y_pos = 16 - x_pos;
+                        y_grid++;
+                    }
+                    else if(map -> tile_at(x_grid, y_grid+2)== 1
+                            && x_pos < 16){
+                        y_pos = 16- x_pos;
+                    }
+
 
                 break;
                 case Airborne:
@@ -139,37 +169,43 @@ void Player::check_collission(GameMap *map)
                         }
                     }
                     if (x_vel > 0){
-                        if(map->tile_at(x_grid +1, y_grid+1) > 0){
+                        if(map->tile_at(x_grid +1, y_grid+1) > 2){
                             x_vel = 0;
                             x_pos = 0;
                             state = ClimbingRightWall;
                         }
-                        else if(map->tile_at(x_grid +1, y_grid) > 0){
+                        else if(map->tile_at(x_grid +1, y_grid) > 2){
                             x_vel = 0;
                             x_pos = 0;
                         }
                     }
                     else if(x_vel < 0){
 
-                        if(map -> tile_at(x_grid -1, y_grid+1) > 0 
+                        if(map -> tile_at(x_grid -1, y_grid+1) > 2 
                                                     && x_pos < 10){
                             x_vel = 0;
                             x_pos = 0;
                             state = ClimbingLeftWall;
                         }
-                        else if(map -> tile_at(x_grid -1, y_grid) > 0
+                        else if(map -> tile_at(x_grid -1, y_grid) > 2
                                                     && x_pos < 10) {
                             x_vel = 0;
                             x_pos = 0;
                         }
                     }
                     if(y_vel > 0){
-                        if(map -> tile_at(x_grid, y_grid + 2) > 0 || 
+                        if(map -> tile_at(x_grid, y_grid + 2) > 2 || 
                            (x_pos > 0 && map -> tile_at
-                           (x_grid+1, y_grid + 2) > 0)){
+                           (x_grid+1, y_grid + 2) > 2)){
                             y_vel = 0;
                             y_pos = 0;
                             state = OnGround;
+                        }
+                        else if(map -> tile_at(x_grid, y_grid + 2) == 2 &&
+                                y_pos > x_pos){
+                            y_vel = 0;
+                            y_pos = x_pos;
+                            state = OnGround; 
                         }
                     }
                 break;
